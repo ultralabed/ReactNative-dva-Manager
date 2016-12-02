@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"dva": "^1.1.0",
+		"firebase": "^3.6.2",
 		"react": "15.4.1",
 		"react-dom": "^15.4.1",
 		"react-native": "0.39.0",
