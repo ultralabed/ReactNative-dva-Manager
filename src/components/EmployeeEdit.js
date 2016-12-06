@@ -1,13 +1,39 @@
 import React, { Component } from 'react';
 import { Picker, Text } from 'react-native';
-import { Card, CardSection, Input, Button } from './common';
+import { Card, CardSection, Input, Button, Confirm } from './common';
 import { connect } from 'dva/mobile';
+import { text } from 'react-native-communications';
+
 
 class EmployeeCreate extends Component {
+  state = { showModal: false }
+
   componentWillMount() {
+    console.log(this.props);
     setTimeout(() => {
-      this.props.dispatch({ type: 'employees/employeeCreateClear' });
+      this.props.dispatch({ type: 'employees/employeeName', payload: this.props.employee.name });
+      this.props.dispatch({ type: 'employees/employeePhone', payload: this.props.employee.phone });
+      this.props.dispatch({ type: 'employees/employeeShift', payload: this.props.employee.shift });
     }, 0);
+  }
+
+  onButtonPress() {
+    const { name, phone, shift } = this.props;
+    this.props.dispatch({ type: 'employees/employeeSave', payload: { name, phone, shift, uid: this.props.employee.uid } });
+  }
+
+  onTextPress() {
+    const { phone, shift } = this.props;
+
+    text(phone, `Your upcoming shift is on ${shift}`);
+  }
+
+  onAccept() {
+    this.props.dispatch({ type: 'employees/employeeDelete', payload: { uid: this.props.employee.uid } });
+  }
+
+  onDecline() {
+    this.setState({ showModal: false });
   }
 
   render() {
@@ -53,11 +79,35 @@ class EmployeeCreate extends Component {
 
         <CardSection>
           <Button
-            onPress={() =>  dispatch({ type: 'employees/employeeCreate', payload: { name, phone, shift: shift || 'Monday' } })}
+            onPress={this.onButtonPress.bind(this)}
           >
-            Create
+            Save Changes
           </Button>
         </CardSection>
+
+        <CardSection>
+          <Button
+            onPress={this.onTextPress.bind(this)}
+          >
+            Text Schedule
+          </Button>
+        </CardSection>
+
+        <CardSection>
+          <Button
+            onPress={() => this.setState({ showModal: !this.state.showModal })}
+          >
+            Fire Employee
+          </Button>
+        </CardSection>
+
+        <Confirm
+          visible={this.state.showModal}
+          onAccept={this.onAccept.bind(this)}
+          onDecline={this.onDecline.bind(this)}
+        >
+           Are you sure you want to delete this?
+        </Confirm>
       </Card>
     );
   }

@@ -41,7 +41,7 @@ const LoginForm = ({ dispatch, loginLoading, error, email, password }) => {
         {loginLoading ? 
           <Spinner size="large" />
           :
-          <Button onPress={(email, password) => dispatch({ type: 'auth/loginUser' })}>
+          <Button onPress={() => dispatch({ type: 'auth/loginUser' })}>
             Login
           </Button>
         }

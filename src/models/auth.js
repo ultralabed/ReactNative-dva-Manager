@@ -4,8 +4,8 @@ import { Actions } from 'react-native-router-flux';
 export default {
   namespace: 'auth',
   state: {
-    email: '',
-    password: '',
+    email: 'test@test.com',
+    password: '12345678',
     loginLoading: false,
     error: '',
     user: null
@@ -51,8 +51,8 @@ export default {
 
     },
     userPassword(state, { payload: password }) {
-      return { ...state, password };
 
+      return { ...state, password };
     },
   },
 }
