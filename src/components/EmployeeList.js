@@ -10,10 +10,6 @@ import ListItem from './ListItem';
 
 class EmployeeList extends Component {
   componentWillMount() {
-    setTimeout(() => {
-      this.props.dispatch({ type: 'employees/employeesFetch' });
-    }, 0);
-
     this.createDataSource(this.props);
   }
 

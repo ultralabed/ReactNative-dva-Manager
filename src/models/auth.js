@@ -8,7 +8,28 @@ export default {
     password: '12345678',
     loginLoading: false,
     error: '',
-    user: null
+    user: null,
+    autoLogin: true,
+  },
+  subscriptions: {
+    init({ dispatch }) {
+      firebase.initializeApp({
+        apiKey: 'AIzaSyDdkeyJhBUM9Z3OUiY3cAmsS1UwtSH1ziI',
+        authDomain: 'manager-443ae.firebaseapp.com',
+        databaseURL: 'https://manager-443ae.firebaseio.com',
+        storageBucket: 'manager-443ae.appspot.com',
+        messagingSenderId: '858458307799'
+      });
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          dispatch({ type: 'loginSuccess', payload: user });
+          dispatch({ type: 'autoLogin', payload: false});
+        } else {
+          // No user is signed in.
+          dispatch({ type: 'autoLogin', payload: false});
+        }
+      });
+    },
   },
   effects: {
     *loginUser({ payload }, { call, put, select }) {
@@ -25,6 +46,11 @@ export default {
         yield put({ type: 'loginSuccess', payload: user });
       }
       yield put({ type: 'loginLoading', payload: false });
+    },
+    *logoutUser({ paylaod }, { put }){
+      yield firebase.auth().signOut();
+      yield put({ type: 'logout' });
+      yield Actions.auth({ type: 'reset' });
     },
   },
   reducers: {
@@ -54,6 +80,14 @@ export default {
 
       return { ...state, password };
     },
+    logout(state) {
+
+      return { ...state, email: '', password: '', error: '' };
+    },
+    autoLogin(state, { payload: autoLogin }) {
+
+      return { ...state, autoLogin };
+    }
   },
 }
 

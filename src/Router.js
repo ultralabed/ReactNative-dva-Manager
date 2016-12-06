@@ -5,18 +5,9 @@ import LoginForm from './components/LoginForm';
 import EmployeeList from './components/EmployeeList';
 import EmployeeCreate from './components/EmployeeCreate';
 import EmployeeEdit from './components/EmployeeEdit';
+import { connect } from 'dva/mobile';
 
 class RouterComponent extends Component {
-  componentWillMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyDdkeyJhBUM9Z3OUiY3cAmsS1UwtSH1ziI',
-      authDomain: 'manager-443ae.firebaseapp.com',
-      databaseURL: 'https://manager-443ae.firebaseio.com',
-      storageBucket: 'manager-443ae.appspot.com',
-      messagingSenderId: '858458307799'
-    });
-  }
-
   render() {
     return (
       <Router sceneStyle={{ paddingTop: 65 }}>
@@ -30,6 +21,8 @@ class RouterComponent extends Component {
             title="Employees"
             onRight={() => Actions.employeeCreate()}
             rightTitle="Add"
+            onLeft={() => this.props.dispatch({ type: 'auth/logoutUser' })}
+            leftTitle="Logout"
             initial
           />
           <Scene 
@@ -48,4 +41,4 @@ class RouterComponent extends Component {
   };
 };
 
-export default RouterComponent;
+export default connect()(RouterComponent);

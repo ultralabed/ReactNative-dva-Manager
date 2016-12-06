@@ -9,7 +9,6 @@ class EmployeeCreate extends Component {
   state = { showModal: false }
 
   componentWillMount() {
-    console.log(this.props);
     setTimeout(() => {
       this.props.dispatch({ type: 'employees/employeeName', payload: this.props.employee.name });
       this.props.dispatch({ type: 'employees/employeePhone', payload: this.props.employee.phone });
@@ -38,7 +37,6 @@ class EmployeeCreate extends Component {
 
   render() {
     const { name, phone, shift, dispatch } = this.props;
-    console.log(this.props);
     const { pickerLabelStyle, pickerCardSection } = styles;
     
     return (
@@ -125,7 +123,7 @@ const styles = {
 
 const mapStateToProps = ({ employees }) => {
   const { name, phone, shift } = employees;
-  console.log(employees);
+
   return { name, phone, shift };
 };
 

@@ -75,7 +75,7 @@ const styles = {
 
 const mapStateToProps = ({ employees }) => {
   const { name, phone, shift } = employees;
-  console.log(employees);
+
   return { name, phone, shift };
 };
 

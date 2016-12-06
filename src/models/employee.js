@@ -10,16 +10,29 @@ export default {
     phone: '',
     shift: '',
   },
+  subscriptions: {
+    initFetch({ dispatch }) {
+      firebase.auth().onAuthStateChanged(function(currentUser) {
+        if (currentUser) {
+          dispatch({ type: 'employeesLoading', payload: true });
+
+          firebase.database().ref(`/users/${currentUser.uid}/employees`)
+          .on('value', (snapshot) => {
+            const val = snapshot.val();
+            if (val) {
+              dispatch({ type: 'employeeList', payload: val });
+            }
+          });
+        }
+      });
+    }
+
+  },
   effects: {
-    *employeesFetch({ payload }, { call, put, select }) {
-      yield put({ type: 'employeesLoading', payload: true });
-      const { currentUser } = yield firebase.auth();
-      const employeeList = yield call(firebaseEmployeeFetch, currentUser);
-      yield put({ type: 'employeeList', payload: employeeList });
-    },
     *employeeCreate({ payload }, { call, put }) {
       const { name, phone, shift } = payload;
       const { currentUser } = yield firebase.auth();
+
       yield firebase.database().ref(`/users/${currentUser.uid}/employees`)
       .push({ name, phone, shift })
       .then(() => {
@@ -29,7 +42,7 @@ export default {
     *employeeSave({ payload }, { put }) {
       const { name, phone, shift, uid } = payload;
       const { currentUser } = yield firebase.auth();
-      console.log('payload save', payload)
+
       firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
         .set({ name, phone, shift })
         .then(() => {
@@ -40,7 +53,7 @@ export default {
     *employeeDelete({ payload }, { put }) {
       const { uid } = payload;
       const { currentUser } = yield firebase.auth();
-      console.log('payload delete', uid)
+
       firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
       .remove()
       .then(() => {
