@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import {
-  Text,
-  ListView,
+  View,
+  ScrollView,
 } from 'react-native';
 import { connect } from 'dva/mobile';
-import { Card, CardSection, Input, Button, Spinner } from './common';
-import ListItem from './ListItem';
+import { Actions } from 'react-native-router-flux';
+import { ListView, List, ActivityIndicator, WhiteSpace } from 'antd-mobile';
+
 
 class EmployeeList extends Component {
   componentWillMount() {
@@ -30,22 +31,37 @@ class EmployeeList extends Component {
   }
 
   renderRow(employee) {
+    const Item = List.Item;
 
-    return <ListItem employee={employee} />;
+    return (
+      <Item
+        onClick={() => Actions.employeeEdit({ employee })}
+        extra="More"
+        arrow="horizontal"
+        >
+          {employee.name}
+      </Item>
+    );
   }
 
   render(dispatch) {
     return (
-      <Card>
+      <ScrollView>
         <ListView 
           enableEmptySections
           dataSource={this.dataSource}
           renderRow={this.renderRow}
         />
-        <CardSection>
-          { this.props.isLoading ? <Spinner size='large'/> : null }
-        </CardSection>
-      </Card>
+        { this.props.isLoading ?
+          <View>
+            <WhiteSpace />
+            <ActivityIndicator text="Fetching Employee List" />
+            <WhiteSpace />
+          </View>
+          :
+          null
+        }
+      </ScrollView>
     );
   }
 };

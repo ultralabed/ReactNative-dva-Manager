@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Picker, Text } from 'react-native';
-import { Card, CardSection, Input, Button } from './common';
+import { Picker, Text, View } from 'react-native';
 import { connect } from 'dva/mobile';
+import { Button, WingBlank, InputItem, List, WhiteSpace, } from 'antd-mobile';
 
 class EmployeeCreate extends Component {
   componentWillMount() {
@@ -16,49 +16,51 @@ class EmployeeCreate extends Component {
     const { pickerLabelStyle, pickerCardSection } = styles;
     
     return (
-      <Card>
-        <CardSection>
-          <Input
-            label="Name"
-            placeholder="Jane"
+      <View>
+        <List>
+          <InputItem
+            clear
             value={name}
-            onChangeText={value => dispatch({ type: 'employees/employeeName', payload: value })}
-          />
-        </CardSection>
-
-        <CardSection>
-          <Input
-            label="Phone"
-            placeholder="555-555-5555"
+            onChange={value => dispatch({ type: 'employees/employeeName', payload: value })}
+            placeholder="Jane"
+            labelNumber={7}
+          >Name
+          </InputItem>
+          <InputItem
+            clear
             value={phone}
-            onChangeText={value => dispatch({ type: 'employees/employeePhone', payload: value })}
-          />
-        </CardSection>
+            onChange={value => dispatch({ type: 'employees/employeePhone', payload: value })}
+            placeholder="555-555-5555"
+            labelNumber={7}
+          >Phone
+          </InputItem>
 
-        <CardSection style={pickerCardSection}>
           <Text style={pickerLabelStyle}>Select Shift</Text>
-          <Picker
-            selectedValue={shift}
-            onValueChange={value => dispatch({ type: 'employees/employeeShift', payload: value })}
-          >
-            <Picker.Item label="Monday" value="Monday" />
-            <Picker.Item label="Tuesday" value="Tuesday" />
-            <Picker.Item label="Wednesday" value="Wednesday" />
-            <Picker.Item label="Thursday" value="Thursday" />
-            <Picker.Item label="Friday" value="Friday" />
-            <Picker.Item label="Saturday" value="Saturday" />
-            <Picker.Item label="Sunday" value="Sunday" />
-          </Picker>
-        </CardSection>
+          <WingBlank style={pickerCardSection}>
+            <Picker
+              selectedValue={shift}
+              onValueChange={value => dispatch({ type: 'employees/employeeShift', payload: value })}
+            >
+              <Picker.Item label="Monday" value="Monday" />
+              <Picker.Item label="Tuesday" value="Tuesday" />
+              <Picker.Item label="Wednesday" value="Wednesday" />
+              <Picker.Item label="Thursday" value="Thursday" />
+              <Picker.Item label="Friday" value="Friday" />
+              <Picker.Item label="Saturday" value="Saturday" />
+              <Picker.Item label="Sunday" value="Sunday" />
+            </Picker>
+          </WingBlank>
 
-        <CardSection>
-          <Button
-            onPress={() =>  dispatch({ type: 'employees/employeeCreate', payload: { name, phone, shift: shift || 'Monday' } })}
-          >
-            Create
-          </Button>
-        </CardSection>
-      </Card>
+          <WhiteSpace />
+          <WingBlank>
+            <Button
+              onClick={() => dispatch({ type: 'employees/employeeCreate', payload: { name, phone, shift: shift || 'Monday' } })}
+              type="primary">
+                Create
+            </Button>
+          </WingBlank>
+        </List>
+      </View>
     );
   }
 }
@@ -69,7 +71,8 @@ const styles = {
   },
   pickerLabelStyle: {
     fontSize: 18,
-    paddingLeft: 20
+    paddingLeft: 15,
+    paddingTop: 5,
   }
 };
 

@@ -4,8 +4,9 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'dva/mobile';
-import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Button, WingBlank, ActivityIndicator, InputItem, List, WhiteSpace } from 'antd-mobile';
 
+const Item = List.Item;
 const LoginForm = ({ dispatch, loginLoading, error, email, password, autoLogin }) => {
   const styles = {
     errorTextStyle: {
@@ -16,47 +17,54 @@ const LoginForm = ({ dispatch, loginLoading, error, email, password, autoLogin }
   };
 
   return (
-    <Card>
+    <View>
       {
-        autoLogin ?
-          <CardSection>
-            <Text>Try auto-login.</Text>
-            <Spinner size="large" />
-          </CardSection>
-          :
-          <View>
-            <CardSection>
-              <Input
-                label="Email"
-                placeholder="email@gmail.com"
-                onChangeText={(value) => dispatch({ type: 'auth/userEmail', payload: value })}
-                value={email}
-              />
-            </CardSection>
-            <CardSection>
-              <Input
-                secureTextEntry
-                label="Password"
-                placeholder="********"
-                onChangeText={(value) => dispatch({ type: 'auth/userPassword', payload: value })}
-                value={password}
-              />
-            </CardSection>
-            <Text style={styles.errorTextStyle}>
-              {error}
-            </Text>
-            <CardSection>
-              {loginLoading ?
-                <Spinner size="large" />
-                :
-                <Button onPress={() => dispatch({ type: 'auth/loginUser' })}>
-                  Login
+      autoLogin ?
+        <View>
+          <WhiteSpace />
+          <ActivityIndicator text="Auto Login" />
+          <WhiteSpace />
+        </View>
+        :
+         <List>
+          <InputItem
+            clear
+            value={email}
+            onChange={(value) => dispatch({ type: 'auth/userEmail', payload: value })}
+            placeholder="email@gmail.com"
+            labelNumber={7}
+          >Email
+          </InputItem>
+          <InputItem
+            clear
+            value={password}
+            type="password"
+            onChange={(value) => dispatch({ type: 'auth/userPassword', payload: value })}
+            placeholder="********"
+            labelNumber={7}
+          >Password
+          </InputItem>
+          <Text style={styles.errorTextStyle}>
+            {error}
+          </Text>
+          <WhiteSpace />
+            {loginLoading ?
+              <WingBlank>
+                <ActivityIndicator text="Logining" />
+              </WingBlank>
+              :
+              <WingBlank>
+                <Button
+                  onClick={() => dispatch({ type: 'auth/loginUser' })}
+                  type="primary">
+                    Login
                 </Button>
-              }
-            </CardSection>
-          </View>
+              </WingBlank>
+            }
+          <WhiteSpace />
+        </List>
       }
-    </Card>
+    </View>
   );
 };
 
