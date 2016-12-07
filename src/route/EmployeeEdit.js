@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Picker, Text, View } from 'react-native';
-import { Confirm } from './common';
+import { Confirm } from '../components/common';
 import { connect } from 'dva/mobile';
 import { text } from 'react-native-communications';
 import { Button, WingBlank, InputItem, List, WhiteSpace } from 'antd-mobile';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
-import SplashScreen from './components/SplashScreen';
-import LoginForm from './components/LoginForm';
-import EmployeeList from './components/EmployeeList';
-import EmployeeCreate from './components/EmployeeCreate';
-import EmployeeEdit from './components/EmployeeEdit';
+import SplashScreen from './route/SplashScreen';
+import LoginForm from './route/LoginForm';
+import EmployeeList from './route/EmployeeList';
+import EmployeeCreate from './route/EmployeeCreate';
+import EmployeeEdit from './route/EmployeeEdit';
 import { connect } from 'dva/mobile';
 
 class RouterComponent extends Component {
