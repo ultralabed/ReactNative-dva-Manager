@@ -39,10 +39,14 @@ export default {
       const user = yield call(firebaseSign, { email, password });
       if (!user) {
         let userCreate = yield call(firebaseCreate, { email, password });
-        userCreate ?
-          yield put({ type: 'loginSuccess', payload: userCreate }) :
+        if (userCreate) {
+          yield put({ type: 'loginSuccess', payload: userCreate });
+          yield Actions.main({ type: 'reset' });
+        } else {
           yield put({ type: 'loginFail' });
+        }
       } else {
+        yield Actions.main({ type: 'reset' });
         yield put({ type: 'loginSuccess', payload: user });
       }
       yield put({ type: 'loginLoading', payload: false });
@@ -55,7 +59,6 @@ export default {
   },
   reducers: {
     loginSuccess(state, { payload: user }) {
-      Actions.main({ type: 'reset' });
 
       return { ...state, user, password: ''  };
     },

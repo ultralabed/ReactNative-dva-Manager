@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
+import SplashScreen from './components/SplashScreen';
 import LoginForm from './components/LoginForm';
 import EmployeeList from './components/EmployeeList';
 import EmployeeCreate from './components/EmployeeCreate';
@@ -11,6 +12,9 @@ class RouterComponent extends Component {
   render() {
     return (
       <Router sceneStyle={{ paddingTop: 65 }}>
+        <Scene key="screen">
+          <Scene key="splash" component={SplashScreen} hideNavBar={true} initial/>
+        </Scene>
         <Scene key="auth">
           <Scene key="login" component={LoginForm} title="Please Login" initial/>
         </Scene>
