@@ -8,6 +8,12 @@ This project does:
 - Dva structure on top of react redux.
 - Use yarn to make sure all fork of this repo has same node modules.
 
+## Demo
+
+![alt tag](https://raw.githubusercontent.com/ultralabed/dvaReactNativeManager/master/splashDemo.jpg)
+<br>
+![alt tag](https://raw.githubusercontent.com/ultralabed/dvaReactNativeManager/master/demo.gif)
+
 ### Before Install
 
 1. Node version, 6.7.0. Tip: `nvm use 6.7.0` 
